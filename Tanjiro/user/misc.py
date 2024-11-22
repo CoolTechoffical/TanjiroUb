@@ -70,3 +70,21 @@ async def demote(_, message):
         can_manage_video_chats=False    
      ))
      await mes.edit(f"Hmm!! demoted 🥺")
+
+@TanjiroUb.on_message(filters.command("id", prefixes=".") & filters.user(SUDO))
+async def id_command(client, message):
+    if message.reply_to_message:
+        replied_user_id = message.reply_to_message.from_user.id
+        chat_id = message.chat.id
+        response_text = (
+            f"**Chat ID:** `{chat_id}`\n"
+            f"**Replied User ID:** `{replied_user_id}`\n"
+            f"**Your User ID:** `{message.from_user.id}`"
+        )
+    else:
+        chat_id = message.chat.id
+        response_text = (
+            f"**Chat ID:** `{chat_id}`\n"
+            f"**Your User ID:** `{message.from_user.id}`"
+        )
+    await message.reply_text(response_text)
