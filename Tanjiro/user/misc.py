@@ -89,16 +89,10 @@ async def id_command(client, message):
         )
     await message.reply_text(response_text)
 
-
 @TanjiroUb.on_message(filters.command("ban", prefixes=".") & filters.user(SUDO))
 async def ban_command(client, message):
-    # Check if the chat is a group or supergroup
-    if message.chat.type not in ["group", "supergroup"]:
-        await message.reply_text("🚫 This command is only allowed in groups! 😠")
-        return
-    
     if not message.reply_to_message:
-        await message.reply_text("❗ Reply to a user's message to ban them! ⚠️")
+        await message.reply_text("Reply to a user's message to ban them! 😡")
         return
 
     user_id_to_ban = message.reply_to_message.from_user.id
@@ -109,22 +103,17 @@ async def ban_command(client, message):
     try:
         await client.kick_chat_member(chat_id, user_id_to_ban)
         response_text = (
-            f"💔 User with ID `{user_id_to_ban}` has been **banned** from **{chat_title}**.\n"
-            f"📌 **Reason:** {reason} 😢"
+            f"😢 User with ID `{user_id_to_ban}` has been banned from **{chat_title}**.\n"
+            f"**Reason:** {reason} 🚫"
         )
         await message.reply_text(response_text)
     except Exception as e:
-        await message.reply_text(f"⚠️ Failed to ban user. Error: {e} 😞")
+        await message.reply_text(f"Failed to ban user. Error: {e} 😞")
 
 @TanjiroUb.on_message(filters.command("unban", prefixes=".") & filters.user(SUDO))
 async def unban_command(client, message):
-    # Check if the chat is a group or supergroup
-    if message.chat.type not in ["group", "supergroup"]:
-        await message.reply_text("❌ This command is only allowed in groups! 😠")
-        return
-    
     if not message.reply_to_message:
-        await message.reply_text("❗ Reply to a user's message to unban them! ⚠️")
+        await message.reply_text("Reply to a user's message to unban them! 🤔")
         return
 
     user_id_to_unban = message.reply_to_message.from_user.id
@@ -134,8 +123,8 @@ async def unban_command(client, message):
     try:
         await client.unban_chat_member(chat_id, user_id_to_unban)
         response_text = (
-            f"✅ User with ID `{user_id_to_unban}` has been **unbanned** in **{chat_title}**. 🎉"
+            f"🎉 User with ID `{user_id_to_unban}` has been unbanned in **{chat_title}**!"
         )
         await message.reply_text(response_text)
     except Exception as e:
-        await message.reply_text(f"⚠️ Failed to unban user. Error: {e} 😞")
+        await message.reply_text(f"Failed to unban user. Error: {e} 😔")
