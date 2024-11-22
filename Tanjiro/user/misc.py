@@ -1,5 +1,5 @@
 from pyrogram import *
-from pyrogram.types import *
+from pyrogram.types import Message
 from Tanjiro import TanjiroUb, SUDO
 import asyncio
 import time
