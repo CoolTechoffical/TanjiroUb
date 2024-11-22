@@ -101,7 +101,7 @@ async def ban_command(client, message):
     reason = " ".join(message.command[1:]) if len(message.command) > 1 else "No reason provided."
 
     try:
-        await client.kick_chat_member(chat_id, user_id_to_ban)
+        await client.ban_chat_member(chat_id, user_id_to_ban)  # Corrected method
         response_text = (
             f"😢 User with ID `{user_id_to_ban}` has been banned from **{chat_title}**.\n"
             f"**Reason:** {reason} 🚫"
@@ -121,7 +121,7 @@ async def unban_command(client, message):
     chat_title = message.chat.title
 
     try:
-        await client.unban_chat_member(chat_id, user_id_to_unban)
+        await client.unban_chat_member(chat_id, user_id_to_unban)  # Corrected method
         response_text = (
             f"🎉 User with ID `{user_id_to_unban}` has been unbanned in **{chat_title}**!"
         )
