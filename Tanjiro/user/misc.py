@@ -89,9 +89,11 @@ async def id_command(client, message):
         )
     await message.reply_text(response_text)
 
+
 @TanjiroUb.on_message(filters.command("ban", prefixes=".") & filters.user(SUDO))
 async def ban_command(client, message):
-    if message.chat.type not in ["supergroup", "group"]:
+    # Check if the chat is a group or supergroup
+    if message.chat.type not in ["group", "supergroup"]:
         await message.reply_text("🚫 This command is only allowed in groups! 😠")
         return
     
@@ -116,7 +118,8 @@ async def ban_command(client, message):
 
 @TanjiroUb.on_message(filters.command("unban", prefixes=".") & filters.user(SUDO))
 async def unban_command(client, message):
-    if message.chat.type not in ["supergroup", "group"]:
+    # Check if the chat is a group or supergroup
+    if message.chat.type not in ["group", "supergroup"]:
         await message.reply_text("❌ This command is only allowed in groups! 😠")
         return
     
