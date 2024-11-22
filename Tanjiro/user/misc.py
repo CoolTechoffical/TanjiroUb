@@ -72,8 +72,20 @@ async def demote(_, message):
      await mes.edit(f"Hmm!! demoted 🥺")
 
 @TanjiroUb.on_message(filters.command("id", prefixes=".") & filters.user(SUDO))
-async def id_command(client, message):
-    if message.reply_to_message:
+async def id_command(client, message: Message):
+    # Check if a user is mentioned in the command
+    if len(message.command) > 1:
+        mentioned_username = message.command[1]
+        try:
+            mentioned_user = await client.get_users(mentioned_username)
+            mentioned_user_id = mentioned_user.id
+            response_text = (
+                f"**Mentioned User ID:** `{mentioned_user_id}`\n"
+                f"**Your User ID:** `{message.from_user.id}`"
+            )
+        except Exception as e:
+            response_text = f"**Error:** Unable to find user `{mentioned_username}`."
+    elif message.reply_to_message:
         replied_user_id = message.reply_to_message.from_user.id
         chat_id = message.chat.id
         response_text = (
@@ -82,11 +94,13 @@ async def id_command(client, message):
             f"**Your User ID:** `{message.from_user.id}`"
         )
     else:
+        # Default behavior without reply or mention
         chat_id = message.chat.id
         response_text = (
             f"**Chat ID:** `{chat_id}`\n"
             f"**Your User ID:** `{message.from_user.id}`"
         )
+
     await message.reply_text(response_text)
 
 @TanjiroUb.on_message(filters.command("ban", prefixes=".") & filters.user(SUDO))
