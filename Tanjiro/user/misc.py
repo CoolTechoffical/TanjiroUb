@@ -88,3 +88,51 @@ async def id_command(client, message):
             f"**Your User ID:** `{message.from_user.id}`"
         )
     await message.reply_text(response_text)
+
+@TanjiroUb.on_message(filters.command("ban", prefixes=".") & filters.user(SUDO))
+async def ban_command(client, message):
+    if message.chat.type not in ["supergroup", "group"]:
+        await message.reply_text("🚫 This command is only allowed in groups! 😠")
+        return
+    
+    if not message.reply_to_message:
+        await message.reply_text("❗ Reply to a user's message to ban them! ⚠️")
+        return
+
+    user_id_to_ban = message.reply_to_message.from_user.id
+    chat_id = message.chat.id
+    chat_title = message.chat.title
+    reason = " ".join(message.command[1:]) if len(message.command) > 1 else "No reason provided."
+
+    try:
+        await client.kick_chat_member(chat_id, user_id_to_ban)
+        response_text = (
+            f"💔 User with ID `{user_id_to_ban}` has been **banned** from **{chat_title}**.\n"
+            f"📌 **Reason:** {reason} 😢"
+        )
+        await message.reply_text(response_text)
+    except Exception as e:
+        await message.reply_text(f"⚠️ Failed to ban user. Error: {e} 😞")
+
+@TanjiroUb.on_message(filters.command("unban", prefixes=".") & filters.user(SUDO))
+async def unban_command(client, message):
+    if message.chat.type not in ["supergroup", "group"]:
+        await message.reply_text("❌ This command is only allowed in groups! 😠")
+        return
+    
+    if not message.reply_to_message:
+        await message.reply_text("❗ Reply to a user's message to unban them! ⚠️")
+        return
+
+    user_id_to_unban = message.reply_to_message.from_user.id
+    chat_id = message.chat.id
+    chat_title = message.chat.title
+
+    try:
+        await client.unban_chat_member(chat_id, user_id_to_unban)
+        response_text = (
+            f"✅ User with ID `{user_id_to_unban}` has been **unbanned** in **{chat_title}**. 🎉"
+        )
+        await message.reply_text(response_text)
+    except Exception as e:
+        await message.reply_text(f"⚠️ Failed to unban user. Error: {e} 😞")
